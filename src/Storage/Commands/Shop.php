@@ -49,6 +49,7 @@ class Shop implements ShopCommand
         $shop = new $model();
         $shop->name = $domain->toNative();
         $shop->password = $token->isNull() ? '' : $token->toNative();
+        $shop->access_token = $token->isNull() ? '' : $token->toNative();
         $shop->email = "shop@{$domain->toNative()}";
         $shop->save();
 
@@ -74,6 +75,7 @@ class Shop implements ShopCommand
     {
         $shop = $this->getShop($shopId);
         $shop->password = $token->toNative();
+        $shop->access_token = $token->toNative();
         $shop->password_updated_at = Carbon::now();
 
         return $shop->save();
@@ -86,6 +88,7 @@ class Shop implements ShopCommand
     {
         $shop = $this->getShop($shopId);
         $shop->password = '';
+        $shop->access_token = '';
         $shop->plan_id = null;
 
         return $shop->save();

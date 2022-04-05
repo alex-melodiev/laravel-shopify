@@ -74,7 +74,7 @@ trait ShopModel
      */
     public function getAccessToken(): AccessTokenValue
     {
-        return AccessToken::fromNative($this->password);
+        return AccessToken::fromNative($this->access_token ?? "");
     }
 
     /**
@@ -122,7 +122,7 @@ trait ShopModel
      */
     public function hasOfflineAccess(): bool
     {
-        return ! $this->getAccessToken()->isNull() && ! empty($this->password);
+        return ! $this->getAccessToken()->isNull() && ! empty($this->access_token);
     }
 
     /**
@@ -146,12 +146,16 @@ trait ShopModel
      */
     public function apiHelper(): IApiHelper
     {
+        // dd("qwe");
+//        dd( $this->getDomain()->toNative(),
+//            $this->getAccessToken()->toNative());
         if ($this->apiHelper === null) {
             // Set the session
             $session = new Session(
                 $this->getDomain()->toNative(),
                 $this->getAccessToken()->toNative()
             );
+
             $this->apiHelper = resolve(IApiHelper::class)->make($session);
         }
 
